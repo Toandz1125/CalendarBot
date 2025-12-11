@@ -1,0 +1,57 @@
+<div class="modal confirm-preview-modal" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel confirm-preview-modal__panel" role="document" aria-labelledby="confirmPreviewTitle">
+    <header class="modal__header confirm-preview__header">
+      <div>
+        <p class="modal__eyebrow">Yêu cầu xác thực</p>
+        <h3 id="confirmPreviewTitle">Xác nhận thao tác</h3>
+      </div>
+      <div class="confirm-preview__header-actions">
+        <span class="confirm-preview__pill" data-field="resultType">—</span>
+        <button class="modal__close" data-close aria-label="Đóng">✕</button>
+      </div>
+    </header>
+
+    <div class="modal__body confirm-preview__body">
+      <section class="confirm-preview__summary confirm-preview__summary--edit">
+        <div class="summary-icon"><i class='bx bx-calendar-check'></i></div>
+        <div class="summary-fields">
+          <label class="field-block">
+            <span class="field-label">Tiêu đề</span>
+            <input type="text" class="field-input" data-field="titleInput" placeholder="Nhập tiêu đề sự kiện" />
+          </label>
+        </div>
+      </section>
+
+      <section class="confirm-preview__timeline confirm-preview__timeline--edit">
+        <label class="field-block">
+          <span class="field-label">Bắt đầu</span>
+          <input type="datetime-local" class="field-input" data-field="startInput" />
+        </label>
+        <label class="field-block">
+          <span class="field-label">Kết thúc</span>
+          <input type="datetime-local" class="field-input" data-field="endInput" />
+        </label>
+        <div class="field-block field-block--static">
+          <span class="field-label">Địa điểm</span>
+          <p class="field-value" data-field="location">—</p>
+        </div>
+      </section>
+
+      <section class="confirm-preview__warnings">
+        <header class="section-header">
+          <div>
+            <p class="section-eyebrow">Kiểm tra nhanh</p>
+            <h4>Cảnh báo</h4>
+          </div>
+        </header>
+        <ul class="warnings-list" data-field="warnings"></ul>
+      </section>
+    </div>
+
+    <footer class="modal__footer confirm-preview__footer">
+      <button class="btn btn-ghost" data-action="cancel">Từ chối</button>
+      <button class="btn btn-gradient" data-action="confirm">Xác nhận</button>
+    </footer>
+  </div>
+</div>

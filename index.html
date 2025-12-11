@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <title>CalendarBot</title>
+  </head>
+<!-- Contacts Modal -->
+<div id="contactsModal" class="modal hide" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="document" aria-labelledby="contactsModalTitle">
+    <header class="modal__header">
+      <h3 id="contactsModalTitle">Thêm danh bạ</h3>
+      <button class="modal__close" data-close aria-label="Close">&times;</button>
+    </header>
+
+    <div class="modal__body">
+      <p>Nhập email và tên gợi nhớ. Bấm <strong>+</strong> để thêm nhiều danh bạ cùng lúc.</p>
+      <br>
+      <div id="contactRows" class="contact-rows">
+        <!-- template row -->
+        <div class="contact-row">
+          <input type="email" class="contact-email" placeholder="Email" required />
+          <input type="text" class="contact-name" placeholder="Tên gợi nhớ" />
+          <button class="row-remove-btn" title="Xóa hàng">✕</button>
+        </div>
+      </div>
+
+      <div class="modal__actions-row">
+        <button id="addRowBtn" class="btn">+</button>
+      </div>
+    </div>
+
+    <footer class="modal__footer">
+      <button id="cancelContactsBtn" class="btn btn-ghost" data-close>Hủy</button>
+      <button id="saveContactsBtn" class="btn btn-gradient">Thêm vào danh bạ</button>
+    </footer>
+  </div>
+</div>
+
+  <body>
+    <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+          <h4>Contacts</h4>
+          <div style="display:flex;gap:8px;align-items:center">
+          <button id="toggleSidebar" title="Collapse sidebar" class="icon-btn">
+            <i class="bx bx-chevrons-left"></i>
+          </button>
+        </div>
+        </div>
+
+        <div class="sidebar__list" id="sidebarList">
+          <p class="sidebar__empty">No contacts yet</p>
+        </div>
+        <div class="sidebar__footer">
+          <button id="importContactsBtn" class="btn btn-gradient" title="Thêm danh bạ">
+            <i class="bx bx-plus"></i> Thêm danh bạ
+          </button>
+        </div>
+      </aside>
+      
+      <!-- MAIN CONTENT -->
+      <main class="main">
+        <nav class="navbar">
+          <h3 class="navbar__logo">CalendarBot</h3>
+          <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+            <div class="accounts" id="accountsContainer">
+              <button id="accountToggle" class="account-btn" aria-expanded="false" title="Accounts">
+                <img src="Picture/profile.png" alt="avatar" class="account-btn__avatar" />
+                <span class="account-btn__name">Account</span>
+                <i class="bx bx-chevron-down account-btn__icon"></i>
+              </button>
+    
+              <div class="account-dropdown hide" id="accountDropdown" role="menu" aria-hidden="true">
+                <div class="account-dropdown__list" id="accountList">
+                  <!-- account items injected here by JS -->
+                </div>
+                <div class="account-dropdown__actions">
+                  <button id="addAccountBtn" class="add-account-btn">+ Add account</button>
+                </div>
+              </div>
+            </div>
+
+            <button id="logoutBtn" class="logout-btn" title="Logout">
+              <i class="bx bx-log-out"></i>
+            </button>
+          </div>
+        </nav>
+
+        <header class="header">
+          <div class="header__title">
+            <h1>Hello, There!</h1>
+            <h2>How can I help you today?</h2>
+          </div>
+        </header>
+
+        <br>
+        <section class="chats"></section>
+
+        <section class="prompt">
+          <form action="#" class="prompt__form" novalidate>
+            <div class="prompt__input-wrapper">
+              <input
+                type="text"
+                placeholder="Enter a prompt here"
+                class="prompt__form-input"
+                required
+              />
+              <button class="prompt__form-button" id="sendButton" type="submit">
+                <i class="bx bx-send"></i>
+              </button>
+              <button class="prompt__form-button" id="voiceButton" type="button" title="Hold Space (or hold this) to speak">
+                <i class="bx bx-microphone"></i>
+              </button>
+            </div>
+          </form>
+          <p class="prompt__disclaim"></p>
+        </section>
+        <button class="theme-toggle-btn" id="themeToggler" title="Toggle theme">
+          <i class="bx bx-sun"></i>
+        </button>
+      </main>
+    </div>
+
+    <!-- SignalR (browser) -->
+    <script src="https://unpkg.com/@microsoft/signalr@7.0.5/dist/browser/signalr.min.js"></script>
+
+    <script type="module" src="./JS/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script type="module" src="./JS/script.js"></script>
+  </body>
+</html>

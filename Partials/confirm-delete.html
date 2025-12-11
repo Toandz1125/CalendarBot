@@ -1,0 +1,33 @@
+<div class="modal confirm-delete-modal" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel confirm-delete-modal__panel" role="document" aria-labelledby="confirmDeleteTitle">
+    <header class="modal__header confirm-delete__header">
+      <div>
+        <p class="modal__eyebrow">Yêu cầu xác thực</p>
+        <h3 id="confirmDeleteTitle">Chọn sự kiện để xóa</h3>
+      </div>
+      <button class="modal__close" data-close aria-label="Đóng">✕</button>
+    </header>
+
+    <div class="modal__body confirm-delete__body">
+      <section class="confirm-delete__warning">
+        <div class="warning-icon">🗑️</div>
+        <div class="warning-text">
+          <p class="warning-eyebrow">Cảnh báo</p>
+          <h4 class="warning-title">Hành động xóa không thể hoàn tác</h4>
+          <p class="warning-desc">Vui lòng kiểm tra kỹ và chọn các sự kiện chính xác trước khi xác nhận xóa.</p>
+        </div>
+      </section>
+
+      <p class="confirm-delete__intro">Ứng dụng đề xuất xóa các sự kiện sau. Vui lòng chọn sự kiện bạn muốn xóa.</p>
+      <div class="confirm-delete__list" data-field="eventList"></div>
+      <p class="confirm-delete__empty hide" data-field="emptyState">Không tìm thấy sự kiện hợp lệ để xóa.</p>
+      <p class="confirm-delete__error hide" data-field="error"></p>
+    </div>
+
+    <footer class="modal__footer confirm-delete__footer">
+      <button class="btn btn-ghost" data-action="cancel">Hủy</button>
+      <button class="btn btn-danger" data-action="confirm">Xóa đã chọn</button>
+    </footer>
+  </div>
+</div>

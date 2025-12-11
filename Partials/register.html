@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="../CSS/auth.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head> 
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Tạo tài khoản</h1>
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="displayName">Tên đầy đủ</label>
+                    <input type="text" id="displayName" name="displayName" placeholder="Tên đầy đủ" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" id="password" name="password" placeholder="Tạo mật khẩu mạnh" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+                <div id="register-message" class="message"></div>
+            </form>
+            <p class="auth-link">Bạn đã có tài khoản? <a href="login.html">Đăng nhập ở đây</a></p>
+            <a href="../index.html" class="back-link">← Quay lại trang chủ</a>
+        </div>
+    </div>
+
+    <div id="otpModalBackdrop" class="modal-backdrop" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="otpTitle">
+    <div class="modal" role="document">
+      <h2 id="otpTitle">Xác thực mã OTP</h2>
+      <div class="modal-body">
+        <p class="hint" id="otpModalHint">Mã đã được gửi tới email của bạn. Vui lòng nhập mã (6 chữ số).</p>
+        <label for="otpInput" class="sr-only">Mã OTP</label>
+        <input id="otpInput" class="input" type="text" inputmode="numeric" maxlength="6" placeholder="Nhập mã OTP" autocomplete="one-time-code" />
+        <div id="otpModalMessage" class="message" aria-live="polite"></div>
+      </div>
+      <div class="actions">
+        <button id="resendBtn" class="btn btn-ghost">Gửi lại (30s)</button>
+        <button id="closeModalBtn" class="btn btn-ghost">Đóng</button>
+        <button id="confirmOtpBtn" class="btn btn-primary">Xác nhận</button>
+      </div>
+    </div>
+    </div>
+
+    <!-- Use correct case for the JS folder -->
+    <script src="../JS/auth.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<div class="modal confirm-preview-modal update-preview-modal" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel update-preview-modal__panel" role="document" aria-labelledby="updatePreviewTitle">
+    <header class="modal__header confirm-preview__header">
+      <div>
+        <p class="modal__eyebrow">Xác nhận cập nhật</p>
+        <h3 id="updatePreviewTitle">Duyệt các sự kiện cần chỉnh sửa</h3>
+      </div>
+      <div class="modal__header-actions">
+        <span class="confirm-preview__pill" data-field="resultType">update_event</span>
+        <button class="modal__close" data-close aria-label="Đóng">✕</button>
+      </div>
+    </header>
+
+    <div class="modal__body confirm-preview__body update-preview__body">
+      <section class="confirm-preview__summary">
+        <div class="summary-icon">🛠️</div>
+        <div class="summary-text">
+          <p class="summary-eyebrow">Tóm tắt</p>
+          <h4 class="summary-title">Chỉnh sửa tiêu đề và thời gian sự kiện</h4>
+          <p class="summary-desc">Chọn sự kiện để cập nhật. Bạn có thể chỉnh sửa tiêu đề và mốc thời gian trước khi xác nhận.</p>
+        </div>
+      </section>
+
+      <p class="update-preview__hint">Chọn sự kiện cần thực thi và cập nhật lại tiêu đề hoặc thời gian trước khi gửi lên máy chủ.</p>
+      <p class="update-preview__error hide" data-field="error"></p>
+      <div class="update-event-list" data-field="eventList"></div>
+      <div class="update-preview__empty hide" data-field="emptyState">Không có dữ liệu để cập nhật.</div>
+    </div>
+
+    <footer class="modal__footer confirm-preview__footer">
+      <button class="btn btn-ghost" data-action="cancel">Hủy</button>
+      <button class="btn btn-gradient" data-action="confirm">Xác nhận cập nhật</button>
+    </footer>
+  </div>
+</div>
