@@ -6,15 +6,24 @@ CalendarBot là giao diện web giàu tương tác cho một trợ lý lịch th
 
 - **Đăng nhập/đăng ký + OTP**: màn hình riêng tại `Partials/login.html` và `Partials/register.html`, hỗ trợ gửi lại OTP, đếm ngược và xác thực trước khi chuyển hướng vào ứng dụng chính.
 - **Chat realtime qua SignalR**: `JS/script.js` khởi tạo Hub connection, gửi prompt, nhận preview (create/update/delete) và dựng các modal xác nhận (`Partials/confirm-*.html`, `Partials/update-preview.html`).
-- **Quản lý tài khoản**: dropdown tài khoản đọc từ `GET /User/Refresh`, thêm tài khoản qua flow OAuth popup (`/OAuth`), đồng bộ avatar/label và tự refresh token (`/OAuth/Refresh`).
+- **Quản lý tài khoản**: quản lý nhiều tài khoản trong một giúp người dùng dễ chuyển đổi tài khoản, dropdown tài khoản đọc từ `GET /User/Refresh`, thêm tài khoản qua flow OAuth popup (`/OAuth`), đồng bộ avatar/label và tự refresh token (`/OAuth/Refresh`).
+- **Tương tác thông minh với lịch**: thêm, sửa, xóa cập nhật trực tiếp lên calendar, cảnh báo nếu bị trùng lịch.
 - **Danh bạ và sidebar**: sidebar contact đồng bộ với API `/Contacts` (GET/POST/DELETE), modal thêm nhiều contact cùng lúc, validation email và hiển thị thông báo lỗi thân thiện.
-- **Trải nghiệm người dùng**: theme tối/sáng, giữ phím Space hoặc giữ nút micro để nhập liệu giọng nói, double-click nút micro để xoá lịch sử chat, auto-gửi câu "ngày hôm nay có lịch gì không" khi vào trang, và highlight code block bằng Highlight.js.
+- **Trải nghiệm người dùng**: theme tối/sáng, giữ phím Space hoặc giữ nút micro để nhập liệu giọng nói, có nút để xoá lịch sử chat, tự động thông báo lịch ngày hôm nay khi người dùng vào trang, và highlight code block bằng Highlight.js.
 - **Thông báo nhắc việc**: backend có thể bắn `CalendarEventReminder`, client hiển thị thông điệp định dạng giờ địa phương.
 
 ## Công nghệ chính
 
 - HTML/CSS thuần (UI trong `index.html`, SCSS-like styling trong `CSS/style.css` và `CSS/auth.css`).
+- Backend được tôi và cộng sự cùng phát triển, bao gồm:
+  -  ASP.NET: Thiết kế các API.
+  -  EF: Tương tác với cơ sở dữ liệu.
+  -  SQL server: Cơ sở dữ liệu.
+  -  Redis: Giúp ứng dụng truy cập nhanh các thông tin cần thiết.
+  -  SignalR: Giữ kết nối realtime để gửi message.
+  -  RabbitMQ: Giảm tải cho ứng dụng.
 - JavaScript ES Modules với templating thủ công từ thư mục `Partials/`.
+- Fine-tune mô hình mBERT với bộ dữ liệu tự tạo thủ công để phân loại ý định người dùng.
 - [SignalR browser client](https://learn.microsoft.com/aspnet/core/signalr/) (CDN) cho realtime.
 - [marked](https://marked.js.org) + [highlight.js](https://highlightjs.org/) để render markdown / code block.
 - Web Speech API cho voice-to-text.
@@ -24,6 +33,7 @@ CalendarBot là giao diện web giàu tương tác cho một trợ lý lịch th
 ```
 .
 ├── index.html                  # Giao diện chính CalendarBot
+├── BE/                         # Backend chạy ứng dụng
 ├── JS/
 │   ├── script.js               # Chat UI, SignalR, contacts, theme, voice, auto question
 │   ├── auth.js                 # Luồng auth + OTP
@@ -36,7 +46,7 @@ CalendarBot là giao diện web giàu tương tác cho một trợ lý lịch th
 ├── Partials/                   # Template HTML được nạp động (message, modal, v.v.)
 ├── data/accounts.json          # Dữ liệu tài khoản mẫu (không còn dùng khi đã kết nối API)
 ├── websocket-test.js           # Ví dụ client Node.js dùng @microsoft/signalr
-└── Test OAuth Server/Server/   # Mẫu ASP.NET Core host cho flow OAuth thử nghiệm
+└── ClientServerC/              # Mẫu test ASP.NET Core client cho flow SignalR thử nghiệm
 ```
 
 ## Thiết lập & chạy
@@ -74,28 +84,17 @@ CalendarBot là giao diện web giàu tương tác cho một trợ lý lịch th
 | Lấy URL OAuth          | GET                                          | `/OAuth?sessionToken=...`                               |
 | Làm mới OAuth          | GET                                          | `/OAuth/Refresh?SessionToken=...&providerUserId=...`    |
 | Lấy URL SignalR        | POST                                         | `/ws` (body: sessionToken)                              |
-| Hub method             | `ProcessMessage`, `ConfirmOperation`, `Echo` |
+| Hub method             | `ProcessMessage`, `ConfirmOperation`         |
 
 > **Lưu ý**: Client mong đợi responses JSON dạng `{ success, message, data }` giống `LoginResponse`. Nếu backend trả cấu trúc khác cần cập nhật parser tương ứng.
 
-## Websocket test client
+## Test Client Server mẫu
 
-`websocket-test.js` là ví dụ Node.js dùng `@microsoft/signalr` và `uuid`:
+Thư mục `ClientServerC/` chứa cấu hình ASP.NET Core minimal để giả lập SignalR client:
 
-```bash
-npm install @microsoft/signalr uuid
-node websocket-test.js
-```
-
-Script đọc `sessionToken` từ `sessionStorage` (trong browser). Khi dùng Node bạn cần thay thế bằng token thật (ví dụ hard-code hoặc đọc file `.env`).
-
-## Test OAuth Server mẫu
-
-Thư mục `Test OAuth Server/Server` chứa cấu hình ASP.NET Core minimal để giả lập OAuth server:
-
-- `appsettings.json` khai báo `OAuthSettings` với `ClientId`, `ClientSecret`, `TokenEndpoint`.
-- `web.config` cấu hình hosting IIS Express/Kestrel.
-  Bạn có thể dùng dự án này để mock quy trình liên kết tài khoản trước khi tích hợp với provider thật.
+- Result.cs: khai báo DTO với các trường dữ liệu.
+- Program.cs: cấu hình client kết nối đến server.
+  Bạn có thể dùng dự án này để mock quy trình gửi tin nhắn trước khi tích hợp với provider thật.
 
 ## Template & assets
 
@@ -106,7 +105,7 @@ Thư mục `Test OAuth Server/Server` chứa cấu hình ASP.NET Core minimal đ
 ## Ghi chú phát triển
 
 - **Voice input**: giữ Space hoặc giữ nút micro để ghi âm. Thả ra để gửi prompt.
-- **Auto logout**: `script.js` tự lên lịch logout sau 24h dựa trên `sessionLoginAt` trong `sessionStorage`.
+- **Auto logout**: `script.js` tự lên lịch logout sau 24h dựa trên `sessionToken` trong `sessionStorage`.
 - **Auto hỏi**: sau khi vào trang, client thử gửi prompt mặc định tối đa 5 lần cho tới khi kết nối SignalR thành công.
 - **Error handling**: mọi lỗi WS/REST sẽ được hiển thị trong bong bóng chat incoming với class `message--error`.
 - **Styling**: `CSS/style.css` ~2k dòng, bao gồm cả modal confirm-delete/update-preview và sidebar responsive. Khi chỉnh sửa nên bật VS Code "Format on Save" để tránh phá layout.
